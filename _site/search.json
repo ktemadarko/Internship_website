@@ -1,0 +1,72 @@
+[
+  {
+    "objectID": "data_exploration.html",
+    "href": "data_exploration.html",
+    "title": "Data Exploration",
+    "section": "",
+    "text": "#loads survey list\nload(\"C:/Users/LENOVO/OneDrive - RMI/EAP_Ethiopia_grain_mill_data/edited_survey_list_30june22.RData\")\n\n#loads 4 data frames one for each survey\nload(\"C:/Users/LENOVO/OneDrive - RMI/EAP_Ethiopia_grain_mill_data/edited_survey_forms_30june22.RData\")\n\n\nGrain Operator FormRevenue and Costs FormRevenueCosts Form\n\n\nThe grain operator form provides two kinds of data.\n\nColumns 1:5 help to link the form with the other 3 forms.\nColumn 6 is the original miller name column\nColumn 7 is an edited column for grouping the data by miller\n\n\nASAD\n\n\n\ndlookr::diagnose(grain_operator_df)\n\n# A tibble: 7 x 6\n  variables       types   missing_count missing_percent unique_count unique_rate\n  <chr>           <chr>           <int>           <dbl>        <int>       <dbl>\n1 ec5_uuid        charac~             0               0          288     1      \n2 ec5_parent_uuid charac~             0               0          288     1      \n3 created_at      POSIXct             0               0          288     1      \n4 uploaded_at     POSIXct             0               0          288     1      \n5 created_by      charac~             0               0            1     0.00347\n6 title           charac~             0               0           25     0.0868 \n7 miller_name     factor              0               0            9     0.0312 \n\n\n\n\n\n\n\n\n\n\n\nOverview\n\ndrbn\n\n\n\n\n\n\n\n\n\n\n\n\nOverview\n\ngeag\n\n\n\n\n\n\n\n\n\n\n\nOverview\n\ngarwe"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "data_exploration.html#try",
+    "href": "data_exploration.html#try",
+    "title": "data_exploration",
+    "section": "Try",
+    "text": "Try\n:::\n\n#loads  sensor list\n#load(\"C:/Users/LENOVO/OneDrive - RMI/EAP_Ethiopia_grain_mill_data/edited_survey_list_30june22.RData\")\n\n#loads 7 data frames one for each sensor\n#load(\"C:/Users/LENOVO/OneDrive - RMI/EAP_Ethiopia_grain_mill_data/edited_survey_forms_30june22.RData\")"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Internship_website",
+    "section": "",
+    "text": "To learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "data_exploration.html#revenue-form",
+    "href": "data_exploration.html#revenue-form",
+    "title": "Data Exploration",
+    "section": "Revenue Form",
+    "text": "Revenue Form\n\nOverviewDetails"
+  },
+  {
+    "objectID": "data_exploration.html#costs-form",
+    "href": "data_exploration.html#costs-form",
+    "title": "Data Exploration",
+    "section": "Costs Form",
+    "text": "Costs Form\n\nOverviewDetails"
+  },
+  {
+    "objectID": "data_exploration.html#overview",
+    "href": "data_exploration.html#overview",
+    "title": "Data Exploration",
+    "section": "Overview",
+    "text": "Overview"
+  },
+  {
+    "objectID": "data_exploration.html#details",
+    "href": "data_exploration.html#details",
+    "title": "Data Exploration",
+    "section": "Details",
+    "text": "Details"
+  },
+  {
+    "objectID": "data_exploration.html#a",
+    "href": "data_exploration.html#a",
+    "title": "Data Exploration",
+    "section": "A",
+    "text": "A"
+  },
+  {
+    "objectID": "data_exploration.html#b",
+    "href": "data_exploration.html#b",
+    "title": "Data Exploration",
+    "section": "B",
+    "text": "B"
+  }
+]
