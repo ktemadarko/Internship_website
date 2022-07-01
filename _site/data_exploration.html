@@ -204,7 +204,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Column 7 is an edited column for grouping the data by miller</li>
 </ul>
 <div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">A</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">SAD</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Source data</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Interval between Grain Operator form entries</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Ask Patience</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
@@ -224,7 +224,69 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<pre><code>::: {.cell}
 
+:::</code></pre>
+<ul>
+<li><p>Was each miller visited the same number of times?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>grain_operator_df<span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(miller_name, <span class="at">name=</span><span class="st">"entries_per_miller"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 9 x 2
+  miller_name    entries_per_miller
+  &lt;fct&gt;                       &lt;int&gt;
+1 Muluneh Hesebo                 31
+2 Tadesse                        70
+3 Ayele Agga                     24
+4 Lapisso                        31
+5 Enguday                        23
+6 Aytegeb                        22
+7 Abiot Timuro                   35
+8 Mulatu                         37
+9 Chakene Betiyo                 15</code></pre>
+</div>
+</div></li>
+<li><p>Get the interval between each visit per miller</p></li>
+<li><p>Interval between each record on the same day per miller</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#lag function from dplyr</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a> grain_operator_df<span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(miller_name<span class="sc">==</span>miller_list[<span class="dv">1</span>])<span class="sc">|&gt;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">same_day=</span><span class="fu">if_else</span>(one_day<span class="sc">==</span><span class="fu">lag</span>(one_day),<span class="st">"same_day"</span>,<span class="st">"different_day"</span>),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">duration=</span><span class="fu">if_else</span>(one_day<span class="sc">==</span><span class="fu">lag</span>(one_day),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                  lubridate<span class="sc">::</span><span class="fu">as.duration</span>(<span class="fu">lag</span>(created_at)<span class="sc">-</span>created_at),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                  lubridate<span class="sc">::</span><span class="fu">as.duration</span>(created_at<span class="sc">-</span>created_at)))<span class="sc">|&gt;</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_count</span>(one_day, <span class="at">name=</span><span class="st">"daily_entry_count"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(same_day<span class="sc">==</span><span class="st">"same_day"</span>)<span class="sc">|&gt;</span> <span class="co">#filtered entries happened on same day</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">12</span>,<span class="dv">11</span>)<span class="sc">|&gt;</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(one_day)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 15 x 4
+   miller_name    one_day             daily_entry_count
+   &lt;fct&gt;          &lt;dttm&gt;                          &lt;int&gt;
+ 1 Muluneh Hesebo 2021-10-27 00:00:00                 2
+ 2 Muluneh Hesebo 2021-11-02 00:00:00                 2
+ 3 Muluneh Hesebo 2021-11-10 00:00:00                 2
+ 4 Muluneh Hesebo 2021-11-16 00:00:00                 2
+ 5 Muluneh Hesebo 2021-11-22 00:00:00                 2
+ 6 Muluneh Hesebo 2021-11-30 00:00:00                 2
+ 7 Muluneh Hesebo 2021-12-03 00:00:00                 2
+ 8 Muluneh Hesebo 2021-12-06 00:00:00                 2
+ 9 Muluneh Hesebo 2021-12-08 00:00:00                 2
+10 Muluneh Hesebo 2021-12-15 00:00:00                 2
+11 Muluneh Hesebo 2021-12-18 00:00:00                 2
+12 Muluneh Hesebo 2021-12-21 00:00:00                 2
+13 Muluneh Hesebo 2021-12-24 00:00:00                 2
+14 Muluneh Hesebo 2021-12-27 00:00:00                 2
+15 Muluneh Hesebo 2021-12-30 00:00:00                 2
+# ... with 1 more variable: duration &lt;Duration&gt;</code></pre>
+</div>
+</div></li>
+</ul>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<pre><code>1.  Was each miller paired with one numerator for the visits?</code></pre>
 </div>
 </div>
 </div>
